@@ -1,3 +1,4 @@
+<script>
 // Step 1: Scan for a device with 0xffe5 service
 navigator.bluetooth
   .requestDevice()
@@ -22,3 +23,4 @@ navigator.bluetooth
     // And of course: error handling!
     console.error("Connection failed!", error);
   });
+</script>
