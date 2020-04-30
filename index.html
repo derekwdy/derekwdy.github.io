@@ -1,42 +1,90 @@
 <html>
-<body>
+  <body>
+    <h1>BLE Test</h1>
 
-<h1>BLE Test</h1>
-<script>
-async function onButtonClick() {
-  let serviceUuid = parseInt("caecface-e1d9-11e6-bf01-fe55135034f0")
-  let characteristicUuid;
+    <button type="button" onclick="onButtonClick3()">
+      Click
+    </button>
 
-  try {
-    log('Requesting Bluetooth Device...');
-    const device = await navigator.bluetooth.requestDevice({
-        filters: [{services: [serviceUuid]}]});
-  
-    log('Connecting to GATT Server...');
-    const server = await device.gatt.connect();
+    <p id="output">Output:<br /></p>
 
-    log('Getting Service...');
-    const service = await server.getPrimaryService(serviceUuid);
+    <script>
+      var device = "";
 
-    log('Getting Characteristics...');
-    let characteristics;
-    if (characteristicUuid) {
-      characteristics = await service.getCharacteristics(characteristicUuid);
-    } else {
-      characteristics = await service.getCharacteristics();
-    }
+      async function onButtonClick3() {
+        let options = {};
+        options.acceptAllDevices = true;
 
-    log('> Characteristics: ' +
-      characteristics.map(c => c.uuid).join('\n' + ' '.repeat(19)));
-  } catch(error) {
-    log('Argh! ' + error);
-  }
-}
-</script>
-  
-<button type="button" onclick="onButtonClick()"> Click </button>
+        try {
+          writeToOutput("Requesting Bluetooth Device...");
+          writeToOutput("with " + JSON.stringify(options));
 
-<p id="demo"></p>
+          if (device === "")
+            device = await navigator.bluetooth.requestDevice(options);
 
-</body>
+          writeToOutput("> Name:             " + device.name);
+          writeToOutput("> Id:               " + device.id);
+          writeToOutput("> Connected:        " + device.gatt.connected);
+        } catch (error) {
+          writeToOutput("Error: " + error);
+        }
+      }
+
+      function writeToOutput(output) {
+        document.getElementById("output").innerHTML += output + "<br>";
+      }
+
+      function onButtonClick() {
+        let options = {};
+        options.acceptAllDevices = true;
+
+        console.log("Requesting Bluetooth Device...");
+        console.log("with " + JSON.stringify(options));
+        navigator.bluetooth
+          .requestDevice(options)
+          .then((device) => {
+            console.log("> Name:             " + device.name);
+            console.log("> Id:               " + device.id);
+            console.log("> Connected:        " + device.gatt.connected);
+          })
+          .catch((error) => {
+            console.log("Argh! " + error);
+          });
+      }
+      async function onButtonClick2() {
+        let serviceUuid = parseInt("caecface-e1d9-11e6-bf01-fe55135034f0");
+        let characteristicUuid = null;
+
+        try {
+          console.log("Requesting Bluetooth Device...");
+          const device = await navigator.bluetooth.requestDevice({
+            filters: [{ services: [serviceUuid] }],
+          });
+
+          console.log("Connecting to GATT Server...");
+          const server = await device.gatt.connect();
+
+          console.log("Getting Service...");
+          const service = await server.getPrimaryService(serviceUuid);
+
+          console.log("Getting Characteristics...");
+          let characteristics;
+          if (characteristicUuid) {
+            characteristics = await service.getCharacteristics(
+              characteristicUuid
+            );
+          } else {
+            characteristics = await service.getCharacteristics();
+          }
+
+          console.log(
+            "> Characteristics: " +
+              characteristics.map((c) => c.uuid).join("\n" + " ".repeat(19))
+          );
+        } catch (error) {
+          console.log("Argh! " + error);
+        }
+      }
+    </script>
+  </body>
 </html>
