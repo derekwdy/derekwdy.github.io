@@ -63,7 +63,8 @@
               characteristicUuid
             );
           }
-          await characteristic.writeValue(numToBuf(x));
+          const buffer = new Int32Array([x]).buffer;
+          await characteristic.writeValue(buffer);
           writeToOutput("> New x:            " + x);
           x += 10;
         } catch (error) {
