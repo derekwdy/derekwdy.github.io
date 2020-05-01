@@ -18,14 +18,7 @@
       const characteristicUuid = "caec2ebc-e1d9-11e6-bf01-fe55135034f1";
 
       let characteristic = "";
-      var x = 300;
-
-      const numToBuf = (num) => [
-        (num >> 24) & 255,
-        (num >> 16) & 255,
-        (num >> 8) & 255,
-        num & 255,
-      ];
+      var x = 50;
 
       async function connectBle() {
         let filters = [];
@@ -44,6 +37,29 @@
 
           writeToOutput("> Name:             " + device.name);
           writeToOutput("> Id:               " + device.id);
+        } catch (error) {
+          writeToOutput("Error: " + error);
+        }
+      }
+
+      async function moveLeft() {
+        try {
+          if (device === "") return;
+
+          const server = await device.gatt.connect();
+
+          if (characteristic == "") {
+            const service = await server.getPrimaryService(serviceUuid);
+
+            writeToOutput("Getting Characteristic...");
+            characteristic = await service.getCharacteristic(
+              characteristicUuid
+            );
+          }
+          const buffer = new Int32Array([x]).buffer;
+          await characteristic.writeValue(buffer);
+          writeToOutput("> New x:            " + x);
+          x -= 10;
         } catch (error) {
           writeToOutput("Error: " + error);
         }
