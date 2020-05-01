@@ -56,7 +56,7 @@
             );
           } else {
             let encoder = new TextEncoder("utf-8");
-            await characteristic.writeValue(encoder.encode(x));
+            await characteristic.writeValue(encoder.encode(x.toString()));
           }
           writeToOutput("> New x:            " + x);
           x += 10;
