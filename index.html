@@ -21,8 +21,11 @@
       var x = 300;
 
       async function connectBle() {
+        let filters = [];
+        filters.push({ services: [serviceUuid] });
+
         let options = {
-          filters: [{ services: serviceUuid }],
+          filters: filters,
           optionalServices: [serviceUuid],
         };
 
