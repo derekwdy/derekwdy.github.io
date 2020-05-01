@@ -22,8 +22,7 @@
 
       async function connectBle() {
         let options = {
-          filters: [serviceUuid],
-          acceptAllDevices: true,
+          filters: [{ services: serviceUuid }],
           optionalServices: [serviceUuid],
         };
 
