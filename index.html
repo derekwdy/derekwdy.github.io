@@ -20,6 +20,13 @@
       let characteristic = "";
       var x = 300;
 
+      const numToBuf = (num) => [
+        (num >> 24) & 255,
+        (num >> 16) & 255,
+        (num >> 8) & 255,
+        num & 255,
+      ];
+
       async function connectBle() {
         let filters = [];
         filters.push({ services: [serviceUuid] });
@@ -56,9 +63,7 @@
               characteristicUuid
             );
           }
-          let buf = Buffer.allocUnsafe(4);
-          buf.writeUInt16BE(x);
-          await characteristic.writeValue(buf);
+          await characteristic.writeValue(numToBuf(x));
           writeToOutput("> New x:            " + x);
           x += 10;
         } catch (error) {
