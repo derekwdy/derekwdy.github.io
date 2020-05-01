@@ -21,8 +21,7 @@
       const serviceUuid = "caecface-e1d9-11e6-bf01-fe55135034f0";
       const characteristicUuid = "caec2ebc-e1d9-11e6-bf01-fe55135034f1";
 
-      let characteristic = "";
-      var x = 50;
+      var x = 100;
 
       async function connectBle() {
         let filters = [];
@@ -52,14 +51,12 @@
 
           const server = await device.gatt.connect();
 
-          if (characteristic == "") {
-            const service = await server.getPrimaryService(serviceUuid);
+          const service = await server.getPrimaryService(serviceUuid);
 
-            writeToOutput("Getting Characteristic...");
-            characteristic = await service.getCharacteristic(
-              characteristicUuid
-            );
-          }
+          const characteristic = await service.getCharacteristic(
+            characteristicUuid
+          );
+
           const buffer = new Int32Array([x]).buffer;
           await characteristic.writeValue(buffer);
           writeToOutput("> New x:            " + x);
@@ -75,14 +72,12 @@
 
           const server = await device.gatt.connect();
 
-          if (characteristic == "") {
-            const service = await server.getPrimaryService(serviceUuid);
+          const service = await server.getPrimaryService(serviceUuid);
 
-            writeToOutput("Getting Characteristic...");
-            characteristic = await service.getCharacteristic(
-              characteristicUuid
-            );
-          }
+          const characteristic = await service.getCharacteristic(
+            characteristicUuid
+          );
+
           const buffer = new Int32Array([x]).buffer;
           await characteristic.writeValue(buffer);
           writeToOutput("> New x:            " + x);
