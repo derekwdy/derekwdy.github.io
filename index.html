@@ -55,7 +55,8 @@
               characteristicUuid
             );
           } else {
-            await characteristic.writeValue(x);
+            let encoder = new TextEncoder("utf-8");
+            await characteristic.writeValue(encoder.encode(x));
           }
           writeToOutput("> New x:            " + x);
           x += 10;
