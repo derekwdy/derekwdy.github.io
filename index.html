@@ -21,8 +21,11 @@
       var x = 300;
 
       async function connectBle() {
-        let options = {};
-        options.acceptAllDevices = true;
+        let options = {
+          filters: [serviceUuid],
+          acceptAllDevices: true,
+          optionalServices: [serviceUuid],
+        };
 
         try {
           writeToOutput("Requesting Bluetooth Device...");
