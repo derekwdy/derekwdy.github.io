@@ -45,6 +45,7 @@
       async function moveRight() {
         try {
           if (device === "") return;
+
           const server = await device.gatt.connect();
 
           if (characteristic == "") {
@@ -54,10 +55,10 @@
             characteristic = await service.getCharacteristic(
               characteristicUuid
             );
-          } else {
-            let encoder = new TextEncoder("utf-8");
-            await characteristic.writeValue(encoder.encode("1234"));
           }
+          let buf = Buffer.allocUnsafe(4);
+          buf.writeUInt16BE(x);
+          await characteristic.writeValue(buf);
           writeToOutput("> New x:            " + x);
           x += 10;
         } catch (error) {
